@@ -1,9 +1,9 @@
-package com.mytaxi.datatransferobject;
+package com.mytaxi.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mytaxi.domainvalue.GeoCoordinate;
+import com.mytaxi.domain.GeoCoordinate;
 import javax.validation.constraints.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

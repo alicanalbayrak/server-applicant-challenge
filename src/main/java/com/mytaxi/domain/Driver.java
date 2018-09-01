@@ -1,7 +1,5 @@
-package com.mytaxi.domainobject;
+package com.mytaxi.domain;
 
-import com.mytaxi.domainvalue.GeoCoordinate;
-import com.mytaxi.domainvalue.OnlineStatus;
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -20,7 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
     name = "driver",
     uniqueConstraints = @UniqueConstraint(name = "uc_username", columnNames = {"username"})
 )
-public class DriverDO
+public class Driver
 {
 
     @Id
@@ -54,12 +52,12 @@ public class DriverDO
     private OnlineStatus onlineStatus;
 
 
-    private DriverDO()
+    private Driver()
     {
     }
 
 
-    public DriverDO(String username, String password)
+    public Driver(String username, String password)
     {
         this.username = username;
         this.password = password;
@@ -67,6 +65,12 @@ public class DriverDO
         this.coordinate = null;
         this.dateCoordinateUpdated = null;
         this.onlineStatus = OnlineStatus.OFFLINE;
+    }
+
+
+    public static Driver createDriver(String username, String password)
+    {
+        return new Driver(username, password);
     }
 
 

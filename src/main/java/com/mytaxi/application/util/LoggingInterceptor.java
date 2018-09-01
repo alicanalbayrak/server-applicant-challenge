@@ -1,4 +1,4 @@
-package com.mytaxi.util;
+package com.mytaxi.application.util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

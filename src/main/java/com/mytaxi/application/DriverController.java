@@ -1,16 +1,17 @@
-package com.mytaxi.controller;
+package com.mytaxi.application;
 
-import com.mytaxi.controller.mapper.DriverMapper;
-import com.mytaxi.datatransferobject.DriverDTO;
-import com.mytaxi.domainobject.DriverDO;
-import com.mytaxi.domainvalue.OnlineStatus;
-import com.mytaxi.exception.ConstraintsViolationException;
-import com.mytaxi.exception.EntityNotFoundException;
-import com.mytaxi.service.driver.DriverService;
+import com.mytaxi.application.mapper.DriverMapper;
+import com.mytaxi.application.dto.DriverDTO;
+import com.mytaxi.domain.Driver;
+import com.mytaxi.domain.DriverService;
+import com.mytaxi.domain.OnlineStatus;
+import com.mytaxi.domain.ConstraintsViolationException;
+import com.mytaxi.domain.EntityNotFoundException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,7 @@ public class DriverController
     @GetMapping("/{driverId}")
     public DriverDTO getDriver(@PathVariable long driverId) throws EntityNotFoundException
     {
-        return DriverMapper.makeDriverDTO(driverService.find(driverId));
+        return DriverMapper.toDto(driverService.find(driverId));
     }
 
 
@@ -52,12 +53,13 @@ public class DriverController
     @ResponseStatus(HttpStatus.CREATED)
     public DriverDTO createDriver(@Valid @RequestBody DriverDTO driverDTO) throws ConstraintsViolationException
     {
-        DriverDO driverDO = DriverMapper.makeDriverDO(driverDTO);
-        return DriverMapper.makeDriverDTO(driverService.create(driverDO));
+        Driver driver = DriverMapper.toEntity(driverDTO);
+        return DriverMapper.toDto(driverService.create(driver));
     }
 
 
     @DeleteMapping("/{driverId}")
+    @Transactional
     public void deleteDriver(@PathVariable long driverId) throws EntityNotFoundException
     {
         driverService.delete(driverId);
@@ -65,6 +67,7 @@ public class DriverController
 
 
     @PutMapping("/{driverId}")
+    @Transactional
     public void updateLocation(
         @PathVariable long driverId, @RequestParam double longitude, @RequestParam double latitude)
         throws EntityNotFoundException
@@ -76,6 +79,6 @@ public class DriverController
     @GetMapping
     public List<DriverDTO> findDrivers(@RequestParam OnlineStatus onlineStatus)
     {
-        return DriverMapper.makeDriverDTOList(driverService.find(onlineStatus));
+        return DriverMapper.toDtoList(driverService.find(onlineStatus));
     }
 }

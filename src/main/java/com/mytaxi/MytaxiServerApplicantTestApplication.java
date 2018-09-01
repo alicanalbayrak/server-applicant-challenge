@@ -1,6 +1,6 @@
 package com.mytaxi;
 
-import com.mytaxi.util.LoggingInterceptor;
+import com.mytaxi.application.util.LoggingInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -1,36 +1,27 @@
-package com.mytaxi.service.driver;
+package com.mytaxi.domain;
 
-import com.mytaxi.dataaccessobject.DriverRepository;
-import com.mytaxi.domainobject.DriverDO;
-import com.mytaxi.domainvalue.GeoCoordinate;
-import com.mytaxi.domainvalue.OnlineStatus;
-import com.mytaxi.exception.ConstraintsViolationException;
-import com.mytaxi.exception.EntityNotFoundException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service to encapsulate the link between DAO and controller and to have business logic for some driver specific things.
  * <p/>
  */
 @Service
-public class DefaultDriverService implements DriverService
+public class DriverService
 {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultDriverService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DriverService.class);
 
     private final DriverRepository driverRepository;
 
-
-    public DefaultDriverService(final DriverRepository driverRepository)
+    public DriverService(final DriverRepository driverRepository)
     {
         this.driverRepository = driverRepository;
     }
-
 
     /**
      * Selects a driver by id.
@@ -39,8 +30,7 @@ public class DefaultDriverService implements DriverService
      * @return found driver
      * @throws EntityNotFoundException if no driver with the given id was found.
      */
-    @Override
-    public DriverDO find(Long driverId) throws EntityNotFoundException
+    public Driver find(Long driverId) throws EntityNotFoundException
     {
         return findDriverChecked(driverId);
     }
@@ -49,21 +39,20 @@ public class DefaultDriverService implements DriverService
     /**
      * Creates a new driver.
      *
-     * @param driverDO
+     * @param newDriver
      * @return
      * @throws ConstraintsViolationException if a driver already exists with the given username, ... .
      */
-    @Override
-    public DriverDO create(DriverDO driverDO) throws ConstraintsViolationException
+    public Driver create(Driver newDriver) throws ConstraintsViolationException
     {
-        DriverDO driver;
+        Driver driver;
         try
         {
-            driver = driverRepository.save(driverDO);
+            driver = driverRepository.save(newDriver);
         }
         catch (DataIntegrityViolationException e)
         {
-            LOG.warn("ConstraintsViolationException while creating a driver: {}", driverDO, e);
+            LOG.warn("ConstraintsViolationException while creating a driver: {}", newDriver, e);
             throw new ConstraintsViolationException(e.getMessage());
         }
         return driver;
@@ -76,12 +65,10 @@ public class DefaultDriverService implements DriverService
      * @param driverId
      * @throws EntityNotFoundException if no driver with the given id was found.
      */
-    @Override
-    @Transactional
     public void delete(Long driverId) throws EntityNotFoundException
     {
-        DriverDO driverDO = findDriverChecked(driverId);
-        driverDO.setDeleted(true);
+        Driver driver = findDriverChecked(driverId);
+        driver.setDeleted(true);
     }
 
 
@@ -93,12 +80,10 @@ public class DefaultDriverService implements DriverService
      * @param latitude
      * @throws EntityNotFoundException
      */
-    @Override
-    @Transactional
     public void updateLocation(long driverId, double longitude, double latitude) throws EntityNotFoundException
     {
-        DriverDO driverDO = findDriverChecked(driverId);
-        driverDO.setCoordinate(new GeoCoordinate(latitude, longitude));
+        Driver driver = findDriverChecked(driverId);
+        driver.setCoordinate(new GeoCoordinate(latitude, longitude));
     }
 
 
@@ -107,14 +92,13 @@ public class DefaultDriverService implements DriverService
      *
      * @param onlineStatus
      */
-    @Override
-    public List<DriverDO> find(OnlineStatus onlineStatus)
+    public List<Driver> find(OnlineStatus onlineStatus)
     {
         return driverRepository.findByOnlineStatus(onlineStatus);
     }
 
 
-    private DriverDO findDriverChecked(Long driverId) throws EntityNotFoundException
+    private Driver findDriverChecked(Long driverId) throws EntityNotFoundException
     {
         return driverRepository.findById(driverId)
             .orElseThrow(() -> new EntityNotFoundException("Could not find entity with id: " + driverId));
