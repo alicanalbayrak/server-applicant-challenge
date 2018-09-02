@@ -26,4 +26,12 @@ public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializabl
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime dateCreated = ZonedDateTime.now();
 
+    @Column(nullable = false)
+    private Boolean deleted = false;
+
+    public void setDeleted(boolean deleted)
+    {
+        this.deleted = deleted;
+    }
+
 }

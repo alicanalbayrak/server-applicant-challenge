@@ -7,12 +7,9 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,9 +32,6 @@ public class Driver extends BaseEntity<Driver>
     @NotNull(message = "Password can not be null!")
     private String password;
 
-    @Column(nullable = false)
-    private Boolean deleted = false;
-
     @Embedded
     private GeoCoordinate coordinate;
 
@@ -54,11 +48,11 @@ public class Driver extends BaseEntity<Driver>
     {
     }
 
+
     public Driver(String username, String password)
     {
         this.username = username;
         this.password = password;
-        this.deleted = false;
         this.coordinate = null;
         this.dateCoordinateUpdated = null;
         this.onlineStatus = OnlineStatus.OFFLINE;

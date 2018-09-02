@@ -2,6 +2,7 @@ package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.BaseEntity;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,17 +19,21 @@ import lombok.Setter;
 public class Car extends BaseEntity<Car>
 {
 
+    @Embedded
     @Column(name = "LicensePlate")
     private LicensePlate licensePlate;
 
+    @Embedded
     @Column(name = "SeatCount")
     private SeatCount seatCount;
 
     @Column(name = "Convertible")
     private Boolean convertible;
 
+    @Embedded
     @Column(name = "Rating")
     private Rating rating;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "EngineType")

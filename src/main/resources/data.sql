@@ -43,20 +43,20 @@ values
 
 -- Initializing bunch of manufacturers
 
-insert into manufacturer (id, date_created, name) values (1, now(), 'Toyota');
-insert into manufacturer (id, date_created, name) values (2, now(), 'Audi');
-insert into manufacturer (id, date_created, name) values (3, now(), 'Bmw');
-insert into manufacturer (id, date_created, name) values (4, now(), 'Ford');
-insert into manufacturer (id, date_created, name) values (5, now(), 'Pontiac');
-insert into manufacturer (id, date_created, name) values (6, now(), 'Mercedes');
-insert into manufacturer (id, date_created, name) values (7, now(), 'Fiat');
-insert into manufacturer (id, date_created, name) values (8, now(), 'Renault');
+insert into manufacturer (id, date_created, deleted,  name) values (1, now(), false, 'Toyota');
+insert into manufacturer (id, date_created, deleted,  name) values (2, now(), false, 'Audi');
+insert into manufacturer (id, date_created, deleted,  name) values (3, now(), false, 'Bmw');
+insert into manufacturer (id, date_created, deleted,  name) values (4, now(), false, 'Ford');
+insert into manufacturer (id, date_created, deleted,  name) values (5, now(), false, 'Pontiac');
+insert into manufacturer (id, date_created, deleted,  name) values (6, now(), false, 'Mercedes');
+insert into manufacturer (id, date_created, deleted,  name) values (7, now(), false, 'Fiat');
+insert into manufacturer (id, date_created, deleted,  name) values (8, now(), false, 'Renault');
 
-insert into car (id, date_created,  license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (1, now(), '06DU8479', 4 , false, 3.5, 'GAS', 1);
+insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
+values (1, now(), false, '06DU8479', 4 , false, 3.5, 'GAS', 1);
 
-insert into car (id, date_created,  license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (2, now(), '34HFV23', 4 , false, 1.08, 'DISEL', 7);
+insert into car (id, date_created,  deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
+values (2, now(), false, '34HFV23', 4 , false, 1.08, 'DISEL', 7);
 
-insert into car (id, date_created,  license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (3, now(), '70AV270', 4 , false, 4.00, 'ELECTRIC', 2);
+insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
+values (3, now(), false, '70AV270', 4 , false, 4.00, 'ELECTRIC', 2);
