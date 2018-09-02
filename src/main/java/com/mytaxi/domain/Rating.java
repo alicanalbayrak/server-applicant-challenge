@@ -13,4 +13,15 @@ public class Rating
 
     private Double rating;
 
+
+    private Rating(Double rating)
+    {
+        this.rating = rating;
+    }
+
+
+    public static Rating of(Double rating)
+    {
+        return new Rating(rating);
+    }
 }

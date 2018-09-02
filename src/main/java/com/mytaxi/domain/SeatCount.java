@@ -1,6 +1,5 @@
 package com.mytaxi.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Value;
 
@@ -12,7 +11,17 @@ import lombok.Value;
 public class SeatCount
 {
 
-
     private Integer seatCount;
 
+
+    private SeatCount(Integer seatCount)
+    {
+        this.seatCount = seatCount;
+    }
+
+
+    public static SeatCount of(Integer seatCount)
+    {
+        return new SeatCount(seatCount);
+    }
 }

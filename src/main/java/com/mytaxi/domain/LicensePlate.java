@@ -1,6 +1,5 @@
 package com.mytaxi.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Value;
 
@@ -15,4 +14,15 @@ public class LicensePlate
 
     private final String licensePlate;
 
+
+    private LicensePlate(String licensePlate)
+    {
+        this.licensePlate = licensePlate;
+    }
+
+
+    public static LicensePlate of(String licensePlate)
+    {
+        return new LicensePlate(licensePlate);
+    }
 }
