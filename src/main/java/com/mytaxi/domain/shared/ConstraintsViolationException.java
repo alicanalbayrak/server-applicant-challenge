@@ -1,4 +1,4 @@
-package com.mytaxi.domain;
+package com.mytaxi.domain.shared;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

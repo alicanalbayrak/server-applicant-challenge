@@ -1,5 +1,7 @@
 package com.mytaxi.domain;
 
+import com.mytaxi.domain.shared.ConstraintsViolationException;
+import com.mytaxi.domain.shared.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

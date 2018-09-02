@@ -48,6 +48,11 @@ public class Car extends BaseEntity<Car>
     private Manufacturer manufacturer;
 
 
+    protected Car()
+    {
+    }
+
+
     @Builder
     private Car(
         Long id,

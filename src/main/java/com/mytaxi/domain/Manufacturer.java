@@ -21,9 +21,13 @@ public class Manufacturer extends BaseEntity<Manufacturer>
     private String name;
 
 
+    protected Manufacturer()
+    {
+    }
+
+
     private Manufacturer(String name)
     {
-        super(null, ZonedDateTime.now(), false);
         this.name = name;
     }
 

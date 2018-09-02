@@ -44,11 +44,16 @@ public class Driver extends BaseEntity<Driver>
     private OnlineStatus onlineStatus;
 
 
+    protected Driver()
+    {
+
+    }
+
+
     public Driver(
         @NotNull(message = "Username can not be null!") String username,
         @NotNull(message = "Password can not be null!") String password)
     {
-        super(null, ZonedDateTime.now(), false);
         this.username = username;
         this.password = password;
         this.coordinate = null;

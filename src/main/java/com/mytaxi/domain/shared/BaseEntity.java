@@ -9,11 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @MappedSuperclass
 @AllArgsConstructor
+@NoArgsConstructor
 public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializable
 {
 

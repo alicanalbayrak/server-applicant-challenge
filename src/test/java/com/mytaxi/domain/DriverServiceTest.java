@@ -1,5 +1,7 @@
 package com.mytaxi.domain;
 
+import com.mytaxi.domain.shared.ConstraintsViolationException;
+import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
