@@ -19,9 +19,10 @@ public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializabl
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "DateCreated", nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime dateCreated = ZonedDateTime.now();
 

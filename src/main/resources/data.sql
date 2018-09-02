@@ -40,3 +40,14 @@ values
  (8,
  'aced0005737200226f72672e737072696e676672616d65776f726b2e646174612e67656f2e506f696e7431b9e90ef11a4006020002440001784400017978704023000000000000404bfa1cac083127', now(), now(), false, 'ONLINE',
 'driver08pw', 'driver08');
+
+-- Initializing bunch of manufacturers
+
+insert into manufacturer (id, date_created, name) values (1, now(), 'Toyota')
+insert into manufacturer (id, date_created, name) values (2, now(), 'Audi')
+insert into manufacturer (id, date_created, name) values (3, now(), 'Bmw')
+insert into manufacturer (id, date_created, name) values (4, now(), 'Ford')
+insert into manufacturer (id, date_created, name) values (5, now(), 'Pontiac')
+insert into manufacturer (id, date_created, name) values (6, now(), 'Mercedes')
+insert into manufacturer (id, date_created, name) values (7, now(), 'Fiat')
+insert into manufacturer (id, date_created, name) values (8, now(), 'Renault')
