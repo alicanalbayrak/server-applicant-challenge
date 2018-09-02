@@ -1,5 +1,6 @@
 package com.mytaxi.domain;
 
+import com.mytaxi.domain.shared.BaseEntity;
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -11,23 +12,20 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Getter
+@Setter
 @Entity
 @Table(
     name = "driver",
     uniqueConstraints = @UniqueConstraint(name = "uc_username", columnNames = {"username"})
 )
-public class Driver
+public class Driver extends BaseEntity<Driver>
 {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(nullable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime dateCreated = ZonedDateTime.now();
 
     @Column(nullable = false)
     @NotNull(message = "Username can not be null!")
@@ -56,7 +54,6 @@ public class Driver
     {
     }
 
-
     public Driver(String username, String password)
     {
         this.username = username;
@@ -71,60 +68,6 @@ public class Driver
     public static Driver createDriver(String username, String password)
     {
         return new Driver(username, password);
-    }
-
-
-    public Long getId()
-    {
-        return id;
-    }
-
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-
-    public Boolean getDeleted()
-    {
-        return deleted;
-    }
-
-
-    public void setDeleted(Boolean deleted)
-    {
-        this.deleted = deleted;
-    }
-
-
-    public OnlineStatus getOnlineStatus()
-    {
-        return onlineStatus;
-    }
-
-
-    public void setOnlineStatus(OnlineStatus onlineStatus)
-    {
-        this.onlineStatus = onlineStatus;
-    }
-
-
-    public GeoCoordinate getCoordinate()
-    {
-        return coordinate;
     }
 
 
