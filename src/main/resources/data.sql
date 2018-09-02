@@ -43,11 +43,11 @@ values
 
 -- Initializing bunch of manufacturers
 
-insert into manufacturer (id, date_created, name) values (1, now(), 'Toyota')
-insert into manufacturer (id, date_created, name) values (2, now(), 'Audi')
-insert into manufacturer (id, date_created, name) values (3, now(), 'Bmw')
-insert into manufacturer (id, date_created, name) values (4, now(), 'Ford')
-insert into manufacturer (id, date_created, name) values (5, now(), 'Pontiac')
-insert into manufacturer (id, date_created, name) values (6, now(), 'Mercedes')
-insert into manufacturer (id, date_created, name) values (7, now(), 'Fiat')
-insert into manufacturer (id, date_created, name) values (8, now(), 'Renault')
+insert into manufacturer (id, date_created, name) values (1, now(), 'Toyota');
+insert into manufacturer (id, date_created, name) values (2, now(), 'Audi');
+insert into manufacturer (id, date_created, name) values (3, now(), 'Bmw');
+insert into manufacturer (id, date_created, name) values (4, now(), 'Ford');
+insert into manufacturer (id, date_created, name) values (5, now(), 'Pontiac');
+insert into manufacturer (id, date_created, name) values (6, now(), 'Mercedes');
+insert into manufacturer (id, date_created, name) values (7, now(), 'Fiat');
+insert into manufacturer (id, date_created, name) values (8, now(), 'Renault');
