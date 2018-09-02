@@ -7,13 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @MappedSuperclass
-@EqualsAndHashCode(of = {"id"})
 public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializable
 {
 
@@ -29,9 +27,43 @@ public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializabl
     @Column(nullable = false)
     private Boolean deleted = false;
 
+
     public void setDeleted(boolean deleted)
     {
         this.deleted = deleted;
     }
 
+    /**
+     * Checks the passed entity, if it has an identity. It gets an identity only by saving.
+     *
+     * @throws IllegalStateException the passed entity does not have the identity attribute set.
+     */
+    private void _checkIdentity(final BaseEntity<?> entity)
+    {
+        if (entity.getId() == null)
+        {
+            throw new IllegalStateException("Identity missing in entity: " + entity);
+        }
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return getId() != null ? getId().hashCode() : 0;
+    }
+
+
+    @Override
+    public boolean equals(final Object object)
+    {
+        if (!(object instanceof BaseEntity))
+        {
+            return false;
+        }
+        final BaseEntity<?> that = (BaseEntity<?>) object;
+        _checkIdentity(this);
+        _checkIdentity(that);
+        return this.id.equals(that.getId());
+    }
 }
