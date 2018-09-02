@@ -1,6 +1,6 @@
 package com.mytaxi;
 
-import com.mytaxi.application.util.LoggingInterceptor;
+import com.mytaxi.application.config.LoggingInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,19 +15,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-public class MytaxiServerApplicantTestApplication extends WebMvcConfigurerAdapter
+public class MytaxiServerApplicantTestApplication
 {
 
     public static void main(String[] args)
     {
         SpringApplication.run(MytaxiServerApplicantTestApplication.class, args);
-    }
-
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry)
-    {
-        registry.addInterceptor(new LoggingInterceptor()).addPathPatterns("/**");
     }
 
 

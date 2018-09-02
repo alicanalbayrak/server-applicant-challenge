@@ -1,11 +1,13 @@
-package com.mytaxi.application.util;
+package com.mytaxi.application.config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+@Component
 public class LoggingInterceptor extends HandlerInterceptorAdapter
 {
 
