@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO Add comment
+ * A repository for Manufacturer entities implemented with Spring Data Jpa
  */
 @Component
 public class JpaDriverRepository implements DriverRepository

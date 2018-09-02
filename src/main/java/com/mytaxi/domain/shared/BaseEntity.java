@@ -7,11 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @MappedSuperclass
+@AllArgsConstructor
 public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializable
 {
 
@@ -28,10 +30,17 @@ public abstract class BaseEntity<T extends BaseEntity<T>> implements Serializabl
     private Boolean deleted = false;
 
 
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+
     public void setDeleted(boolean deleted)
     {
         this.deleted = deleted;
     }
+
 
     /**
      * Checks the passed entity, if it has an identity. It gets an identity only by saving.

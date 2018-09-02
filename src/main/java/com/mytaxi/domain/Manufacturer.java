@@ -1,6 +1,7 @@
 package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.BaseEntity;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -20,16 +21,11 @@ public class Manufacturer extends BaseEntity<Manufacturer>
     private String name;
 
 
-    private Manufacturer()
-    {
-    }
-
-
     private Manufacturer(String name)
     {
+        super(null, ZonedDateTime.now(), false);
         this.name = name;
     }
-
 
     public static Manufacturer createManufacturer(String name)
     {

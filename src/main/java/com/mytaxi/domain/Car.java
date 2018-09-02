@@ -1,6 +1,7 @@
 package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.BaseEntity;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Builder
 @Getter
 @Setter
 @Entity
@@ -47,4 +47,24 @@ public class Car extends BaseEntity<Car>
     @JoinColumn(name = "ManufacturerId")
     private Manufacturer manufacturer;
 
+
+    @Builder
+    private Car(
+        Long id,
+        ZonedDateTime dateCreated,
+        Boolean deleted,
+        LicensePlate licensePlate,
+        SeatCount seatCount,
+        Boolean convertible,
+        Rating rating,
+        EngineType engineType, Manufacturer manufacturer)
+    {
+        super(id, dateCreated, deleted);
+        this.licensePlate = licensePlate;
+        this.seatCount = seatCount;
+        this.convertible = convertible;
+        this.rating = rating;
+        this.engineType = engineType;
+        this.manufacturer = manufacturer;
+    }
 }

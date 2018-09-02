@@ -44,13 +44,11 @@ public class Driver extends BaseEntity<Driver>
     private OnlineStatus onlineStatus;
 
 
-    private Driver()
+    public Driver(
+        @NotNull(message = "Username can not be null!") String username,
+        @NotNull(message = "Password can not be null!") String password)
     {
-    }
-
-
-    private Driver(String username, String password)
-    {
+        super(null, ZonedDateTime.now(), false);
         this.username = username;
         this.password = password;
         this.coordinate = null;
@@ -61,6 +59,7 @@ public class Driver extends BaseEntity<Driver>
 
     /**
      * Encapsulates Driver creation from world
+     *
      * @param username
      * @param password
      * @return New Driver
