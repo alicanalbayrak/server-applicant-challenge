@@ -11,16 +11,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class JpaCarRepository implements CarRepository
 {
+
+    private final CrudCarRepository crudCarRepository;
+
+
+    public JpaCarRepository(CrudCarRepository crudCarRepository)
+    {
+        this.crudCarRepository = crudCarRepository;
+    }
+
+
     @Override
     public Optional<Car> findById(Long carId)
     {
-        return Optional.empty();
+        return crudCarRepository.findById(carId);
     }
 
 
     @Override
     public Car save(Car car)
     {
-        return null;
+        return crudCarRepository.save(car);
     }
 }
