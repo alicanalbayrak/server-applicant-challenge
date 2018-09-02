@@ -40,7 +40,7 @@ public class DriverServiceTest
     public void createDuplicateDriver()
     {
 
-        Driver driver = new Driver("john", "pa$$word");
+        Driver driver = createNewDriver();
         when(driverRepository.save(driver)).thenThrow(new DuplicateKeyException("Duplicate key detected..."));
 
         Executable driverCreateExecutable = () -> driverService.create(driver);
@@ -54,7 +54,7 @@ public class DriverServiceTest
     @DisplayName("Driver creation field check")
     public void createDriverAndCheckAttributes() throws ConstraintsViolationException
     {
-        Driver driver = new Driver("john", "pa$$word");
+        Driver driver = createNewDriver();
         when(driverRepository.save(driver)).thenReturn(driver);
 
         driverService.create(driver);
@@ -77,7 +77,7 @@ public class DriverServiceTest
         double longitude = 88;
         double latitude = 0;
 
-        Driver driver = new Driver("john", "pa$$word");
+        Driver driver = createNewDriver();
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
         driverService.updateLocation(driverId, longitude, latitude);
@@ -93,7 +93,7 @@ public class DriverServiceTest
     {
 
         long driverId = 1L;
-        Driver driver = new Driver("john", "pa$$word");
+        Driver driver = createNewDriver();
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         assertEquals(false, driver.getDeleted());
 
@@ -102,6 +102,10 @@ public class DriverServiceTest
         assertEquals(true, driver.getDeleted());
         verify(driverRepository, times(1)).findById(driverId);
 
+    }
+
+    private static Driver createNewDriver(){
+        return Driver.create("john", "pa$$word");
     }
 
 }

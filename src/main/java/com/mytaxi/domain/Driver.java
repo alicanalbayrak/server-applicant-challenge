@@ -49,7 +49,7 @@ public class Driver extends BaseEntity<Driver>
     }
 
 
-    public Driver(String username, String password)
+    private Driver(String username, String password)
     {
         this.username = username;
         this.password = password;
@@ -59,7 +59,13 @@ public class Driver extends BaseEntity<Driver>
     }
 
 
-    public static Driver createDriver(String username, String password)
+    /**
+     * Encapsulates Driver creation from world
+     * @param username
+     * @param password
+     * @return New Driver
+     */
+    public static Driver create(String username, String password)
     {
         return new Driver(username, password);
     }
