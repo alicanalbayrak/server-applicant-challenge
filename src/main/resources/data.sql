@@ -56,7 +56,8 @@ insert into car (id, date_created, deleted, license_plate, seat_count, convertib
 values (1, now(), false, '06DU8479', 4 , false, 3.5, 'GAS', 1);
 
 insert into car (id, date_created,  deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (2, now(), false, '34HFV23', 4 , false, 1.08, 'DISEL', 7);
+values (2, now(), false, '34HFV23', 2 , false, 1.08, 'DISEL', 7);
 
 insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (3, now(), false, '70AV270', 4 , false, 4.00, 'ELECTRIC', 2);
+values (3, now(), false, '70AV270', 8 , false, 4.00, 'ELECTRIC', 2);
+
