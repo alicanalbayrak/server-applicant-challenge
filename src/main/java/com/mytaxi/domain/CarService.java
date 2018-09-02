@@ -2,6 +2,7 @@ package com.mytaxi.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,9 +11,12 @@ public class CarService
 
     private static final Logger LOG = LoggerFactory.getLogger(CarService.class);
 
+    private final CarRepository carRepository;
 
-    public CarService()
+    @Autowired
+    public CarService(final CarRepository carRepository)
     {
+        this.carRepository = carRepository;
     }
 
 
@@ -31,6 +35,7 @@ public class CarService
 
     /**
      * Creates a new car
+     *
      * @param car
      * @return Created Car object
      * @throws ConstraintsViolationException if a car already exists with the given license_plate, ... .
@@ -43,6 +48,7 @@ public class CarService
 
     /**
      * Deletes an existing car by id
+     *
      * @param carId
      */
     public void delete(Long carId) throws EntityNotFoundException
@@ -53,12 +59,13 @@ public class CarService
 
     /**
      * Updates Car's variant fields with given car object
+     *
      * @param carId
      * @param car
      * @throws EntityNotFoundException
      * @throws ConstraintsViolationException
      */
-    public void update(Long carId, Car car) throws EntityNotFoundException, ConstraintsViolationException
+    public void update(Car car) throws EntityNotFoundException, ConstraintsViolationException
     {
         throw new UnsupportedOperationException();
     }

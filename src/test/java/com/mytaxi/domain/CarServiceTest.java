@@ -2,18 +2,27 @@ package com.mytaxi.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CarServiceTest
 {
 
-    private CarService carService = new CarService();
+
+    @Mock
+    private CarRepository carRepository;
+
+    @InjectMocks
+    private CarService carService;
 
 
     @BeforeEach
     void setUp()
     {
+        MockitoAnnotations.initMocks(this);
     }
 
 
@@ -31,6 +40,7 @@ class CarServiceTest
         assertThat(car.getManufacturer().getName()).isEqualTo("Honda");
         assertThat(car.getRating()).isEqualTo(Rating.of(0d));
         assertThat(car.getSeatCount()).isEqualTo(SeatCount.of(4));
+        assertThat(car.getDeleted()).isFalse();
     }
 
 
@@ -47,19 +57,27 @@ class CarServiceTest
         assertThat(car.getManufacturer().getName()).isEqualTo("Honda");
         assertThat(car.getRating()).isEqualTo(Rating.of(0d));
         assertThat(car.getSeatCount()).isEqualTo(SeatCount.of(4));
-    }
-
-
-
-    @Test
-    void delete()
-    {
+        assertThat(car.getDeleted()).isFalse();
     }
 
 
     @Test
-    void update()
+    void delete() throws EntityNotFoundException
     {
+        long carId = 1L;
+
+        carService.delete(carId);
+
+    }
+
+
+    @Test
+    void update() throws ConstraintsViolationException, EntityNotFoundException
+    {
+
+        Car car = createNewCar();
+
+        carService.update(car);
     }
 
 
