@@ -51,3 +51,12 @@ insert into manufacturer (id, date_created, name) values (5, now(), 'Pontiac');
 insert into manufacturer (id, date_created, name) values (6, now(), 'Mercedes');
 insert into manufacturer (id, date_created, name) values (7, now(), 'Fiat');
 insert into manufacturer (id, date_created, name) values (8, now(), 'Renault');
+
+insert into car (id, date_created,  license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
+values (1, now(), '06DU8479', 4 , false, 3.5, 'GAS', 1);
+
+insert into car (id, date_created,  license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
+values (2, now(), '34HFV23', 4 , false, 1.08, 'DISEL', 7);
+
+insert into car (id, date_created,  license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
+values (3, now(), '70AV270', 4 , false, 4.00, 'ELECTRIC', 2);
