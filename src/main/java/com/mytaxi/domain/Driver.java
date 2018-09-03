@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,9 +47,7 @@ public class Driver extends BaseEntity<Driver>
 
     protected Driver()
     {
-
     }
-
 
     public Driver(
         @NotNull(message = "Username can not be null!") String username,
@@ -61,18 +60,6 @@ public class Driver extends BaseEntity<Driver>
         this.onlineStatus = OnlineStatus.OFFLINE;
     }
 
-
-    /**
-     * Encapsulates Driver creation from world
-     *
-     * @param username
-     * @param password
-     * @return New Driver
-     */
-    public static Driver create(String username, String password)
-    {
-        return new Driver(username, password);
-    }
 
 
     public void setCoordinate(GeoCoordinate coordinate)

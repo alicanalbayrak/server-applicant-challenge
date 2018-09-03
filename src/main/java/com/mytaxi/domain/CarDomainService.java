@@ -8,11 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Domain Service to encapsulate Car specific domain things such entities, value objects.
+ * May communicate with some other Aggregates
+ * <p/>
+ */
 @Service
-public class CarService
+public class CarDomainService
 {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CarService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CarDomainService.class);
 
     private final CarRepository carRepository;
 
@@ -20,7 +25,7 @@ public class CarService
 
 
     @Autowired
-    public CarService(final CarRepository carRepository, ManufacturerRepository manufacturerRepository)
+    public CarDomainService(final CarRepository carRepository, ManufacturerRepository manufacturerRepository)
     {
         this.carRepository = carRepository;
         this.manufacturerRepository = manufacturerRepository;

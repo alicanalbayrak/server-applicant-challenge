@@ -73,7 +73,7 @@ public class CrudDriverRepositoryTest
     @Test
     public void testCreateDriver()
     {
-        Driver driver = crudDriverRepository.save(Driver.create("tmpDriver", "tmpDriverPassword"));
+        Driver driver = crudDriverRepository.save(new Driver("tmpDriver", "tmpDriverPassword"));
         assertThat(driver).isNotNull();
         assertThat(driver.getId()).isEqualTo(crudDriverRepository.findById(driver.getId()).get().getId());
         assertThat(crudDriverRepository.count()).isEqualTo(9);

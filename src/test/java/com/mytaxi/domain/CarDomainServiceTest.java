@@ -15,7 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class CarServiceTest
+class CarDomainServiceTest
 {
 
     @Mock
@@ -25,7 +25,7 @@ class CarServiceTest
     private CarRepository carRepository;
 
     @InjectMocks
-    private CarService carService;
+    private CarDomainService carDomainService;
 
 
     @BeforeEach
@@ -42,7 +42,7 @@ class CarServiceTest
         long carId = 1L;
         when(carRepository.findById(carId)).thenReturn(Optional.of(createNewCar()));
 
-        Car car = carService.find(1L);
+        Car car = carDomainService.find(1L);
 
         assertThat(car).isNotNull();
         assertThat(car.getId()).isNotNull();
@@ -63,7 +63,7 @@ class CarServiceTest
         Car car = createNewCar();
         when(carRepository.save(car)).thenReturn(car);
 
-        carService.create(createNewCar());
+        carDomainService.create(createNewCar());
 
         verify(carRepository, times(1)).save(car);
     }
@@ -77,7 +77,7 @@ class CarServiceTest
         Car car = createNewCar();
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
 
-        carService.delete(carId);
+        carDomainService.delete(carId);
 
         assertThat(car.getDeleted()).isTrue();
 
@@ -94,7 +94,7 @@ class CarServiceTest
         when(carRepository.findById(2L)).thenReturn(Optional.of(car));
         when(manufacturerRepository.findByName("Toyota")).thenReturn(Optional.of(Manufacturer.createManufacturer("Toyota")));
 
-        carService.update(createDifferentCar());
+        carDomainService.update(createDifferentCar());
 
         // these attributes should not ve overwritten!
         assertThat(car.getId()).isEqualTo(1L);

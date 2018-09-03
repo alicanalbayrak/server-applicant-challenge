@@ -11,7 +11,7 @@ public class DriverMapper
 {
     public static Driver toEntity(DriverDTO driverDTO)
     {
-        return Driver.create(driverDTO.getUsername(), driverDTO.getPassword());
+        return new Driver(driverDTO.getUsername(), driverDTO.getPassword());
     }
 
 

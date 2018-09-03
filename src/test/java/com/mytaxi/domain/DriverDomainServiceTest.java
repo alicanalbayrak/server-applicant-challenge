@@ -19,15 +19,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("Unit Tests of DriverService")
-public class DriverServiceTest
+@DisplayName("Unit Tests of DriverServiceImpl")
+public class DriverDomainServiceTest
 {
 
     @Mock
     private DriverRepository driverRepository;
 
     @InjectMocks
-    private DriverService driverService;
+    private DriverDomainService driverDomainService;
 
 
     @BeforeEach
@@ -45,7 +45,7 @@ public class DriverServiceTest
         Driver driver = createNewDriver();
         when(driverRepository.save(driver)).thenThrow(new DuplicateKeyException("Duplicate key detected..."));
 
-        Executable driverCreateExecutable = () -> driverService.create(driver);
+        Executable driverCreateExecutable = () -> driverDomainService.create(driver);
 
         assertThrows(ConstraintsViolationException.class, driverCreateExecutable, "some message");
         verify(driverRepository, times(1)).save(driver);
@@ -59,7 +59,7 @@ public class DriverServiceTest
         Driver driver = createNewDriver();
         when(driverRepository.save(driver)).thenReturn(driver);
 
-        driverService.create(driver);
+        driverDomainService.create(driver);
 
         assertNull(driver.getId());
         assertEquals(false, driver.getDeleted());
@@ -82,7 +82,7 @@ public class DriverServiceTest
         Driver driver = createNewDriver();
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
-        driverService.updateLocation(driverId, longitude, latitude);
+        driverDomainService.updateLocation(driverId, longitude, latitude);
 
         assertEquals(new GeoCoordinate(latitude, longitude), driver.getCoordinate());
         verify(driverRepository, times(1)).findById(driverId);
@@ -99,7 +99,7 @@ public class DriverServiceTest
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         assertEquals(false, driver.getDeleted());
 
-        driverService.delete(driverId);
+        driverDomainService.delete(driverId);
 
         assertEquals(true, driver.getDeleted());
         verify(driverRepository, times(1)).findById(driverId);
@@ -107,7 +107,7 @@ public class DriverServiceTest
     }
 
     private static Driver createNewDriver(){
-        return Driver.create("john", "pa$$word");
+        return new Driver("john", "pa$$word");
     }
 
 }

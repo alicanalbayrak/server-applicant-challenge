@@ -9,18 +9,19 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
- * Service to encapsulate the link between DAO and controller and to have business logic for some driver specific things.
+ * Domain Service to encapsulate Driver specific domain things such entities, value objects.
+ * May communicate with some other Aggregates or sub-entities.
  * <p/>
  */
 @Service
-public class DriverService
+public class DriverDomainService
 {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DriverService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DriverDomainService.class);
 
     private final DriverRepository driverRepository;
 
-    public DriverService(final DriverRepository driverRepository)
+    public DriverDomainService(final DriverRepository driverRepository)
     {
         this.driverRepository = driverRepository;
     }
