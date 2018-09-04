@@ -38,7 +38,7 @@ public class CarServiceImpl implements CarService
 
 
     @Override
-    public CarDTO create(CarDTO newCar) throws ConstraintsViolationException
+    public CarDTO create(CarDTO newCar) throws ConstraintsViolationException, EntityNotFoundException
     {
         Car car = CarMapper.toEntity(newCar);
         return CarMapper.toDto(carDomainService.create(car));

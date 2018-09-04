@@ -13,7 +13,7 @@ public interface CarService
 {
     CarDTO find(Long carId) throws EntityNotFoundException;
 
-    CarDTO create(CarDTO newCar) throws ConstraintsViolationException;
+    CarDTO create(CarDTO newCar) throws ConstraintsViolationException, EntityNotFoundException;
 
     void delete(Long carId) throws EntityNotFoundException;
 

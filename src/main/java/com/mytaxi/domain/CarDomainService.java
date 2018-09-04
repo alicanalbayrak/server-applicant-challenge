@@ -54,8 +54,11 @@ public class CarDomainService
      * @return Created Car object
      * @throws ConstraintsViolationException if a car already exists with the given license_plate, ... .
      */
-    public Car create(Car newCar) throws ConstraintsViolationException
+    public Car create(Car newCar) throws ConstraintsViolationException, EntityNotFoundException
     {
+
+        Manufacturer manufacturer = findManufacturerChecked(newCar.getManufacturer().getName());
+        newCar.setManufacturer(manufacturer);
 
         Car car;
         try
