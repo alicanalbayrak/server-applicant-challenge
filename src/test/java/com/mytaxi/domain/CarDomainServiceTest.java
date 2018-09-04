@@ -94,7 +94,7 @@ class CarDomainServiceTest
         when(carRepository.findById(2L)).thenReturn(Optional.of(car));
         when(manufacturerRepository.findByName("Toyota")).thenReturn(Optional.of(Manufacturer.createManufacturer("Toyota")));
 
-        carDomainService.update(createDifferentCar());
+        carDomainService.update(2, createDifferentCar());
 
         // these attributes should not ve overwritten!
         assertThat(car.getId()).isEqualTo(1L);
