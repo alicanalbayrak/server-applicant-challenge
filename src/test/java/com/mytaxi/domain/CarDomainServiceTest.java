@@ -57,7 +57,7 @@ class CarDomainServiceTest
 
 
     @Test
-    void testCreateNewCar() throws ConstraintsViolationException
+    void testCreateNewCar() throws ConstraintsViolationException, EntityNotFoundException
     {
 
         Car car = createNewCar();
@@ -120,8 +120,6 @@ class CarDomainServiceTest
             .manufacturer(Manufacturer.createManufacturer("Honda"))
             .rating(Rating.of(0d))
             .seatCount(SeatCount.of(4))
-            .dateCreated(ZonedDateTime.now())
-            .deleted(false)
             .build();
     }
 
@@ -136,8 +134,6 @@ class CarDomainServiceTest
             .manufacturer(Manufacturer.createManufacturer("Toyota"))
             .rating(Rating.of(0d))
             .seatCount(SeatCount.of(4))
-            .dateCreated(ZonedDateTime.now())
-            .deleted(true)
             .build();
     }
 
