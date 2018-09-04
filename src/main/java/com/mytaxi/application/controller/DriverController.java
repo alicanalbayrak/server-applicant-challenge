@@ -1,9 +1,7 @@
 package com.mytaxi.application.controller;
 
-import com.mytaxi.application.mapper.DriverMapper;
 import com.mytaxi.application.dto.DriverDTO;
-import com.mytaxi.domain.Driver;
-import com.mytaxi.domain.DriverDomainService;
+import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
@@ -32,20 +30,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class DriverController
 {
 
-    private final DriverDomainService driverDomainService;
+    private final DriverService driverService;
 
 
     @Autowired
-    public DriverController(final DriverDomainService driverDomainService)
+    public DriverController(DriverService driverService)
     {
-        this.driverDomainService = driverDomainService;
+        this.driverService = driverService;
     }
 
 
     @GetMapping("/{driverId}")
     public DriverDTO getDriver(@PathVariable long driverId) throws EntityNotFoundException
     {
-        return DriverMapper.toDto(driverDomainService.find(driverId));
+        return driverService.find(driverId);
     }
 
 
@@ -53,8 +51,7 @@ public class DriverController
     @ResponseStatus(HttpStatus.CREATED)
     public DriverDTO createDriver(@Valid @RequestBody DriverDTO driverDTO) throws ConstraintsViolationException
     {
-        Driver driver = DriverMapper.toEntity(driverDTO);
-        return DriverMapper.toDto(driverDomainService.create(driver));
+        return driverService.create(driverDTO);
     }
 
 
@@ -62,7 +59,7 @@ public class DriverController
     @Transactional
     public void deleteDriver(@PathVariable long driverId) throws EntityNotFoundException
     {
-        driverDomainService.delete(driverId);
+        driverService.delete(driverId);
     }
 
 
@@ -72,13 +69,13 @@ public class DriverController
         @PathVariable long driverId, @RequestParam double longitude, @RequestParam double latitude)
         throws EntityNotFoundException
     {
-        driverDomainService.updateLocation(driverId, longitude, latitude);
+        driverService.updateLocation(driverId, longitude, latitude);
     }
 
 
     @GetMapping
     public List<DriverDTO> findDrivers(@RequestParam OnlineStatus onlineStatus)
     {
-        return DriverMapper.toDtoList(driverDomainService.find(onlineStatus));
+        return findDrivers(onlineStatus);
     }
 }
