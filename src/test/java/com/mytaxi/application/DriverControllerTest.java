@@ -3,8 +3,8 @@ package com.mytaxi.application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mytaxi.application.controller.DriverController;
 import com.mytaxi.application.dto.DriverDTO;
+import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.Driver;
-import com.mytaxi.domain.DriverDomainService;
 import com.mytaxi.domain.GeoCoordinate;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.EntityNotFoundException;
@@ -25,8 +25,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,38 +41,38 @@ class DriverControllerTest
     private MockMvc mvc;
 
     @MockBean
-    private DriverDomainService driverDomainService;
+    private DriverService driverService;
+
 
     @Test
     void getDriverById() throws Exception
     {
-        Driver driver = newDriver();
+        DriverDTO driverDto = getMockDriverDtos().get(0);
 
-        given(driverDomainService.find(driver.getId())).willReturn(driver);
+        given(driverService.find(driverDto.getId())).willReturn(driverDto);
 
-        mvc.perform(get("/v1/drivers/{driverId}", driver.getId())
+        mvc.perform(get("/v1/drivers/{driverId}", driverDto.getId())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.username", is(driver.getUsername())))
-            .andExpect(jsonPath("$.password", is(driver.getPassword())));
+            .andExpect(jsonPath("$.username", is(driverDto.getUsername())))
+            .andExpect(jsonPath("$.password", is(driverDto.getPassword())));
 
-        verify(driverDomainService, times(1)).find(driver.getId());
-        verifyNoMoreInteractions(driverDomainService);
-
+        verify(driverService, times(1)).find(driverDto.getId());
+        verifyNoMoreInteractions(driverService);
     }
 
 
     @Test
     void getDriverWithWrongId() throws Exception
     {
-        given(driverDomainService.find(1L)).willThrow(EntityNotFoundException.class);
+        given(driverService.find(1L)).willThrow(EntityNotFoundException.class);
 
         mvc.perform(get("/v1/drivers/{driverId}", 1)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest());
 
-        verify(driverDomainService, times(1)).find(1L);
-        verifyNoMoreInteractions(driverDomainService);
+        verify(driverService, times(1)).find(1L);
+        verifyNoMoreInteractions(driverService);
     }
 
 
@@ -78,16 +80,14 @@ class DriverControllerTest
     void createDriver() throws Exception
     {
 
-//        DriverDTO driverDto = getMockDriverDtos().get(0);
-//        Driver driver = newDriver();
-//
-//        when(driverService.create(driver)).thenReturn(driver);
-//
-//        mvc.perform(post("/v1/drivers").contentType(MediaType.APPLICATION_JSON_UTF8)
-//            .content(asJsonString(driverDto)))
-//            .andExpect(status().isCreated())
-//            .andExpect(jsonPath("$.username", is(driver.getUsername())))
-//            .andExpect(jsonPath("$.password", is(driver.getPassword())));
+        DriverDTO driverDto = getMockDriverDtos().get(0);
+        Driver driver = newDriver();
+
+        when(driverService.create(driverDto)).thenReturn(driverDto);
+
+        mvc.perform(post("/v1/drivers").contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(driverDto)))
+            .andExpect(status().is2xxSuccessful());
     }
 
 
@@ -96,13 +96,13 @@ class DriverControllerTest
     {
         DriverDTO driverDto = getMockDriverDtos().get(0);
 
-        doNothing().when(driverDomainService).delete(driverDto.getId());
+        doNothing().when(driverService).delete(driverDto.getId());
 
         mvc.perform(delete("/v1/drivers/{driverId}", driverDto.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        verify(driverDomainService, times(1)).delete(driverDto.getId());
+        verify(driverService, times(1)).delete(driverDto.getId());
     }
 
 
@@ -116,6 +116,7 @@ class DriverControllerTest
     void findDrivers()
     {
     }
+
 
     List<DriverDTO> getMockDriverDtos()
     {
