@@ -9,6 +9,7 @@ import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,7 +20,15 @@ import org.springframework.stereotype.Service;
 public class DriverServiceImpl implements DriverService
 {
 
-    private DriverDomainService driverDomainService;
+    private final DriverDomainService driverDomainService;
+
+
+    @Autowired
+    public DriverServiceImpl(DriverDomainService driverDomainService)
+    {
+        this.driverDomainService = driverDomainService;
+    }
+
 
     @Override
     public DriverDTO find(Long driverId) throws EntityNotFoundException

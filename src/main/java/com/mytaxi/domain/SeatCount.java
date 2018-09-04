@@ -14,6 +14,12 @@ public class SeatCount
     private Integer seatCount;
 
 
+    public SeatCount()
+    {
+        this.seatCount = null;
+    }
+
+
     private SeatCount(Integer seatCount)
     {
         this.seatCount = seatCount;
@@ -23,5 +29,10 @@ public class SeatCount
     public static SeatCount of(Integer seatCount)
     {
         return new SeatCount(seatCount);
+    }
+
+    public int getValue()
+    {
+        return seatCount;
     }
 }

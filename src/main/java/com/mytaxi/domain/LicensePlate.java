@@ -11,11 +11,15 @@ import lombok.Value;
 public class LicensePlate
 {
 
-
     private final String licensePlate;
 
 
-    private LicensePlate(String licensePlate)
+
+    protected LicensePlate(){
+        licensePlate = null;
+    }
+
+    protected LicensePlate(String licensePlate)
     {
         this.licensePlate = licensePlate;
     }
@@ -25,4 +29,10 @@ public class LicensePlate
     {
         return new LicensePlate(licensePlate);
     }
+
+    public String getValue()
+    {
+        return licensePlate;
+    }
+
 }

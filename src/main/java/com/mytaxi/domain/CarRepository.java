@@ -9,4 +9,6 @@ public interface CarRepository
 
     Car save(Car car);
 
+    Iterable<Car> findAll();
+
 }

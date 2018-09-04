@@ -33,4 +33,11 @@ public class JpaCarRepository implements CarRepository
     {
         return crudCarRepository.save(car);
     }
+
+
+    @Override
+    public Iterable<Car> findAll()
+    {
+        return crudCarRepository.findAll();
+    }
 }

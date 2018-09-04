@@ -1,7 +1,9 @@
 package com.mytaxi.domain;
 
+import com.google.common.collect.Lists;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,16 +87,17 @@ public class CarDomainService
     /**
      * Updates Car's variant fields with given car object
      *
+     * @param carId
      * @param car
      * @throws EntityNotFoundException
      * @throws ConstraintsViolationException
      */
-    public void update(Car car) throws EntityNotFoundException, ConstraintsViolationException
+    public Car update(long carId, Car car) throws EntityNotFoundException, ConstraintsViolationException
     {
 
         Manufacturer manufacturer = findManufacturerChecked(car.getManufacturer().getName());
 
-        Car existingCar = findCarChecked(car.getId());
+        Car existingCar = findCarChecked(carId);
 
         existingCar.setManufacturer(manufacturer);
         existingCar.setEngineType(car.getEngineType());
@@ -102,6 +105,8 @@ public class CarDomainService
         existingCar.setLicensePlate(car.getLicensePlate());
         existingCar.setRating(car.getRating());
         existingCar.setSeatCount(car.getSeatCount());
+
+        return existingCar;
 
     }
 
@@ -133,4 +138,9 @@ public class CarDomainService
             .orElseThrow(() -> new EntityNotFoundException("Could not find manufacturer entity with name: " + name));
     }
 
+
+    public List<Car> listCars()
+    {
+        return Lists.newArrayList(carRepository.findAll());
+    }
 }
