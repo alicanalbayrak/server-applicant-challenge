@@ -1,6 +1,7 @@
 package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.BaseEntity;
+import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +49,12 @@ public class Car extends BaseEntity<Car>
     @JoinColumn(name = "ManufacturerId")
     private Manufacturer manufacturer;
 
+    @Version
+    @Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private long version;
+
+    @Column(name = "InUse", nullable = false)
+    private Boolean inUse = false;
 
     protected Car()
     {
@@ -56,20 +64,26 @@ public class Car extends BaseEntity<Car>
     @Builder
     private Car(
         Long id,
-        ZonedDateTime dateCreated,
-        Boolean deleted,
         LicensePlate licensePlate,
         SeatCount seatCount,
         Boolean convertible,
         Rating rating,
         EngineType engineType, Manufacturer manufacturer)
     {
-        super(id, dateCreated, deleted);
+        super(id, ZonedDateTime.now(), false);
         this.licensePlate = licensePlate;
         this.seatCount = seatCount;
         this.convertible = convertible;
         this.rating = rating;
         this.engineType = engineType;
         this.manufacturer = manufacturer;
+    }
+
+
+    public void verifyNotInUse() throws CarAlreadyInUseException
+    {
+        if(inUse){
+            throw new CarAlreadyInUseException("This Car cannot be selected. Please try another one...");
+        }
     }
 }

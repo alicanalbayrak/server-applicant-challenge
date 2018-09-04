@@ -1,6 +1,7 @@
 package com.mytaxi.domain;
 
 import com.google.common.collect.Lists;
+import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
@@ -93,9 +94,8 @@ public class CarDomainService
      * @param carId
      * @param car
      * @throws EntityNotFoundException
-     * @throws ConstraintsViolationException
      */
-    public Car update(long carId, Car car) throws EntityNotFoundException, ConstraintsViolationException
+    public Car update(long carId, Car car) throws EntityNotFoundException
     {
 
         Manufacturer manufacturer = findManufacturerChecked(car.getManufacturer().getName());
@@ -111,6 +111,14 @@ public class CarDomainService
 
         return existingCar;
 
+    }
+
+
+    public Car getCarByIdIfAvailable(long carId) throws EntityNotFoundException, CarAlreadyInUseException
+    {
+        Car car = findCarChecked(carId);
+        car.verifyNotInUse();
+        return car;
     }
 
 

@@ -1,8 +1,10 @@
 package com.mytaxi.application.controller;
 
+import com.mytaxi.application.dto.DriverCarSelectDTO;
 import com.mytaxi.application.dto.DriverDTO;
 import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.OnlineStatus;
+import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
@@ -73,9 +75,25 @@ public class DriverController
     }
 
 
+    @PostMapping("/{driverId}/selectCar/{carId}")
+    @Transactional
+    public DriverCarSelectDTO selectCar(@RequestParam long driverId, @RequestParam long carId) throws CarAlreadyInUseException, EntityNotFoundException
+    {
+        return driverService.selectCar(driverId, carId);
+    }
+
+
+    @DeleteMapping("/{driverId}/deselectCar")
+    @Transactional
+    public void deselectCar(@RequestParam long driverId) throws CarAlreadyInUseException, EntityNotFoundException
+    {
+        driverService.deselectCar(driverId);
+    }
+
+
     @GetMapping
     public List<DriverDTO> findDrivers(@RequestParam OnlineStatus onlineStatus)
     {
-        return findDrivers(onlineStatus);
+        return driverService.find(onlineStatus);
     }
 }

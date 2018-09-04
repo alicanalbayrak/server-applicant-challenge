@@ -2,7 +2,6 @@ package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,11 +61,15 @@ class CarDomainServiceTest
     {
 
         Car car = createNewCar();
+        when(manufacturerRepository.findByName(car.getManufacturer().getName())).thenReturn(Optional.of(car.getManufacturer()));
         when(carRepository.save(car)).thenReturn(car);
 
-        carDomainService.create(createNewCar());
+        Car createdCar = carDomainService.create(createNewCar());
 
+        assertThat(createdCar.getManufacturer().getName())
+            .isEqualTo(car.getManufacturer().getName());
         verify(carRepository, times(1)).save(car);
+        verify(manufacturerRepository, times(1)).findByName(any(String.class));
     }
 
 

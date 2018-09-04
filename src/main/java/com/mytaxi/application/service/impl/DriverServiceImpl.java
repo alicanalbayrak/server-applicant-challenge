@@ -1,11 +1,14 @@
 package com.mytaxi.application.service.impl;
 
+import com.mytaxi.application.dto.DriverCarSelectDTO;
 import com.mytaxi.application.dto.DriverDTO;
+import com.mytaxi.application.mapper.DriverCarSelectMapper;
 import com.mytaxi.application.mapper.DriverMapper;
 import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.Driver;
 import com.mytaxi.domain.DriverDomainService;
 import com.mytaxi.domain.OnlineStatus;
+import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Check interface comments
+ *
  * @see com.mytaxi.application.service.DriverService
  */
 @Service
@@ -63,5 +67,20 @@ public class DriverServiceImpl implements DriverService
     public List<DriverDTO> find(OnlineStatus onlineStatus)
     {
         return DriverMapper.toDtoList(driverDomainService.find(onlineStatus));
+    }
+
+
+    @Override
+    public DriverCarSelectDTO selectCar(long driverId, long carId) throws EntityNotFoundException, CarAlreadyInUseException
+    {
+        Driver driver = driverDomainService.selectCar(driverId, carId);
+        return DriverCarSelectMapper.from(driver);
+    }
+
+
+    @Override
+    public void deselectCar(long driverId) throws EntityNotFoundException
+    {
+        driverDomainService.deselectCar(driverId);
     }
 }

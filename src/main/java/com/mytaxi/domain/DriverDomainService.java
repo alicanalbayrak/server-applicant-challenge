@@ -1,5 +1,6 @@
 package com.mytaxi.domain;
 
+import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
@@ -21,10 +22,15 @@ public class DriverDomainService
 
     private final DriverRepository driverRepository;
 
-    public DriverDomainService(final DriverRepository driverRepository)
+    private final CarDomainService carDomainService;
+
+
+    public DriverDomainService(final DriverRepository driverRepository, CarDomainService carDomainService)
     {
         this.driverRepository = driverRepository;
+        this.carDomainService = carDomainService;
     }
+
 
     /**
      * Selects a driver by id.
@@ -98,6 +104,38 @@ public class DriverDomainService
     public List<Driver> find(OnlineStatus onlineStatus)
     {
         return driverRepository.findByOnlineStatus(onlineStatus);
+    }
+
+
+    /**
+     * Retrive and ask for Car availability by carId. If Car is available hold for the driver.
+     *
+     * @param driverId
+     * @param carId
+     * @return Driver that selects car
+     * @throws EntityNotFoundException  Driver or Car not found
+     * @throws CarAlreadyInUseException Car is in use.
+     */
+    public Driver selectCar(long driverId, long carId) throws EntityNotFoundException, CarAlreadyInUseException
+    {
+        Car car = carDomainService.getCarByIdIfAvailable(carId);
+        Driver driver = findDriverChecked(driverId);
+
+        driver.selectCar(car);
+        return driver;
+    }
+
+
+    /**
+     * Deselect if any Car in use.
+     *
+     * @param driverId
+     * @throws EntityNotFoundException Driver not found
+     */
+    public void deselectCar(long driverId) throws EntityNotFoundException
+    {
+        Driver driver = findDriverChecked(driverId);
+        driver.deselectCar();
     }
 
 

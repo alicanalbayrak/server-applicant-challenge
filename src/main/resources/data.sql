@@ -52,12 +52,12 @@ insert into manufacturer (id, date_created, deleted,  name) values (6, now(), fa
 insert into manufacturer (id, date_created, deleted,  name) values (7, now(), false, 'Fiat');
 insert into manufacturer (id, date_created, deleted,  name) values (8, now(), false, 'Renault');
 
-insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (1, now(), false, '06DU8479', 4 , false, 3.5, 'GAS', 1);
+insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id, in_use)
+values (1, now(), false, '06DU8479', 4 , false, 3.5, 'GAS', 1, false);
 
-insert into car (id, date_created,  deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (2, now(), false, '34HFV23', 2 , false, 1.08, 'DISEL', 7);
+insert into car (id, date_created,  deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id, in_use)
+values (2, now(), false, '34HFV23', 2 , false, 1.08, 'DISEL', 7, false);
 
-insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id)
-values (3, now(), false, '70AV270', 8 , false, 4.00, 'ELECTRIC', 2);
+insert into car (id, date_created, deleted, license_plate, seat_count, convertible, rating, engine_type, manufacturer_id, in_use)
+values (3, now(), false, '70AV270', 8 , false, 4.00, 'ELECTRIC', 2, false);
 
