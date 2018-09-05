@@ -2,6 +2,8 @@ package com.mytaxi.application.controller;
 
 import com.mytaxi.application.dto.DriverCarSelectDTO;
 import com.mytaxi.application.dto.DriverDTO;
+import com.mytaxi.application.dto.DriverQueryRequest;
+import com.mytaxi.application.dto.DriverQueryResponse;
 import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.CarAlreadyInUseException;
@@ -10,6 +12,7 @@ import com.mytaxi.domain.shared.DriverAlreadySelectedCarException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import com.mytaxi.domain.shared.OfflineDriverCarSelectionException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,4 +98,27 @@ public class DriverController
     {
         return driverService.find(onlineStatus.orElse(null), username.orElse(null));
     }
+
+
+    /**
+     * Example search by licensePlate
+     * http://localhost:8080/v1/drivers/search/car?licensePlate=70AV270
+     * <p>
+     * by engineType
+     * http://localhost:8080/v1/drivers/search/car?engineType=GAS
+     *
+     * All ONLINE drivers that selected a car
+     * http://localhost:8080/v1/drivers/search/car?onlineStatus=ONLINE
+     *
+     * @param params
+     * @return
+     * @throws EntityNotFoundException
+     */
+    @GetMapping("/search/car")
+    public List<DriverQueryResponse> getDriver(@RequestParam Map<String, String> params) throws EntityNotFoundException
+    {
+        DriverQueryRequest driverQuerRequest = DriverQueryRequest.parseInputParams(params);
+        return driverService.searchDriver(driverQuerRequest);
+    }
+
 }

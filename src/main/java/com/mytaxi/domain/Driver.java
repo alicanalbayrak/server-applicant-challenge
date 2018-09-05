@@ -61,6 +61,14 @@ public class Driver extends BaseEntity<Driver>
     }
 
 
+    public Driver(Long id, @NotNull(message = "Username can not be null!") String username, OnlineStatus onlineStatus)
+    {
+        super(id, null, false);
+        this.username = username;
+        this.onlineStatus = onlineStatus;
+    }
+
+
     public void setCoordinate(GeoCoordinate coordinate)
     {
         this.coordinate = coordinate;

@@ -2,6 +2,8 @@ package com.mytaxi.application.service;
 
 import com.mytaxi.application.dto.DriverCarSelectDTO;
 import com.mytaxi.application.dto.DriverDTO;
+import com.mytaxi.application.dto.DriverQueryRequest;
+import com.mytaxi.application.dto.DriverQueryResponse;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
@@ -9,7 +11,6 @@ import com.mytaxi.domain.shared.DriverAlreadySelectedCarException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import com.mytaxi.domain.shared.OfflineDriverCarSelectionException;
 import java.util.List;
-import java.util.Optional;
 
 public interface DriverService
 {
@@ -30,4 +31,6 @@ public interface DriverService
     void deselectCar(long driverId) throws EntityNotFoundException;
 
     List<DriverDTO> find(OnlineStatus onlineStatus, String username);
+
+    List<DriverQueryResponse> searchDriver(DriverQueryRequest driverQuerRequest);
 }

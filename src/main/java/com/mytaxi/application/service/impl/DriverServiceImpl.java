@@ -2,8 +2,11 @@ package com.mytaxi.application.service.impl;
 
 import com.mytaxi.application.dto.DriverCarSelectDTO;
 import com.mytaxi.application.dto.DriverDTO;
+import com.mytaxi.application.dto.DriverQueryRequest;
+import com.mytaxi.application.dto.DriverQueryResponse;
 import com.mytaxi.application.mapper.DriverCarSelectionMapper;
 import com.mytaxi.application.mapper.DriverMapper;
+import com.mytaxi.application.mapper.DriverQueryMapper;
 import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.Driver;
 import com.mytaxi.domain.DriverCarSelectionDomainService;
@@ -14,8 +17,8 @@ import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.DriverAlreadySelectedCarException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import com.mytaxi.domain.shared.OfflineDriverCarSelectionException;
+import com.mytaxi.infrastructure.SearchDriverCarDao;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,8 @@ public class DriverServiceImpl implements DriverService
     private DriverDomainService driverDomainService;
 
     private DriverCarSelectionDomainService driverCarSelectionDomainService;
+
+    private SearchDriverCarDao searchDriverCarDao;
 
 
     @Override
@@ -90,6 +95,14 @@ public class DriverServiceImpl implements DriverService
         return DriverMapper.makeDriverDTOList(driverDomainService.findAllByOnlineStatusOrUsername(onlineStatus, username));
     }
 
+
+    @Override
+    public List<DriverQueryResponse> searchDriver(DriverQueryRequest driverQueryRequest)
+    {
+        return DriverQueryMapper.toDtoList(searchDriverCarDao.searchDriver(driverQueryRequest));
+    }
+
+
     /**
      * Injection point
      *
@@ -106,5 +119,12 @@ public class DriverServiceImpl implements DriverService
     public void setDriverCarSelectionDomainService(DriverCarSelectionDomainService driverCarSelectionDomainService)
     {
         this.driverCarSelectionDomainService = driverCarSelectionDomainService;
+    }
+
+
+    @Autowired
+    public void setSearchDriverCarDao(SearchDriverCarDao searchDriverCarDao)
+    {
+        this.searchDriverCarDao = searchDriverCarDao;
     }
 }
