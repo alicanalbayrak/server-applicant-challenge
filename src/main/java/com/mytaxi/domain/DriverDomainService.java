@@ -1,35 +1,28 @@
 package com.mytaxi.domain;
 
-import com.mytaxi.domain.shared.CarAlreadyInUseException;
+import com.google.common.collect.Lists;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Domain Service to encapsulate Driver specific domain things such entities, value objects.
- * May communicate with some other Aggregates or sub-entities.
+ * Service to encapsulate the link between DAO and app layer sevice and to have business logic for some driver specific things.
  * <p/>
  */
-@Service
+@Component
 public class DriverDomainService
 {
 
     private static final Logger LOG = LoggerFactory.getLogger(DriverDomainService.class);
 
-    private final DriverRepository driverRepository;
-
-    private final CarDomainService carDomainService;
-
-
-    public DriverDomainService(final DriverRepository driverRepository, CarDomainService carDomainService)
-    {
-        this.driverRepository = driverRepository;
-        this.carDomainService = carDomainService;
-    }
+    private DriverRepository driverRepository;
 
 
     /**
@@ -48,20 +41,20 @@ public class DriverDomainService
     /**
      * Creates a new driver.
      *
-     * @param newDriver
+     * @param driverDO
      * @return
      * @throws ConstraintsViolationException if a driver already exists with the given username, ... .
      */
-    public Driver create(Driver newDriver) throws ConstraintsViolationException
+    public Driver create(Driver driverDO) throws ConstraintsViolationException
     {
         Driver driver;
         try
         {
-            driver = driverRepository.save(newDriver);
+            driver = driverRepository.save(driverDO);
         }
         catch (DataIntegrityViolationException e)
         {
-            LOG.warn("ConstraintsViolationException while creating a driver: {}", newDriver, e);
+            LOG.warn("ConstraintsViolationException while creating a driver: {}", driverDO, e);
             throw new ConstraintsViolationException(e.getMessage());
         }
         return driver;
@@ -74,6 +67,7 @@ public class DriverDomainService
      * @param driverId
      * @throws EntityNotFoundException if no driver with the given id was found.
      */
+    @Transactional
     public void delete(Long driverId) throws EntityNotFoundException
     {
         Driver driver = findDriverChecked(driverId);
@@ -89,6 +83,7 @@ public class DriverDomainService
      * @param latitude
      * @throws EntityNotFoundException
      */
+    @Transactional
     public void updateLocation(long driverId, double longitude, double latitude) throws EntityNotFoundException
     {
         Driver driver = findDriverChecked(driverId);
@@ -107,42 +102,22 @@ public class DriverDomainService
     }
 
 
-    /**
-     * Retrive and ask for Car availability by carId. If Car is available hold for the driver.
-     *
-     * @param driverId
-     * @param carId
-     * @return Driver that selects car
-     * @throws EntityNotFoundException  Driver or Car not found
-     * @throws CarAlreadyInUseException Car is in use.
-     */
-    public Driver selectCar(long driverId, long carId) throws EntityNotFoundException, CarAlreadyInUseException
-    {
-        Car car = carDomainService.getCarByIdIfAvailable(carId);
-        Driver driver = findDriverChecked(driverId);
-
-        driver.selectCar(car);
-        return driver;
-    }
-
-
-    /**
-     * Deselect if any Car in use.
-     *
-     * @param driverId
-     * @throws EntityNotFoundException Driver not found
-     */
-    public void deselectCar(long driverId) throws EntityNotFoundException
-    {
-        Driver driver = findDriverChecked(driverId);
-        driver.deselectCar();
-    }
-
-
     private Driver findDriverChecked(Long driverId) throws EntityNotFoundException
     {
         return driverRepository.findById(driverId)
             .orElseThrow(() -> new EntityNotFoundException("Could not find entity with id: " + driverId));
     }
 
+
+    @Autowired
+    public void setDriverRepository(DriverRepository driverRepository)
+    {
+        this.driverRepository = driverRepository;
+    }
+
+
+    public List<Driver> findAllByOnlineStatusOrUsername(OnlineStatus onlineStatus, String username)
+    {
+        return Lists.newArrayList(driverRepository.findAllByOnlineStatusOrUsername(onlineStatus, username));
+    }
 }

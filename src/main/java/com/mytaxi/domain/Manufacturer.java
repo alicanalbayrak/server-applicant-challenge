@@ -1,7 +1,6 @@
 package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.BaseEntity;
-import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;

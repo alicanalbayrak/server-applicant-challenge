@@ -2,7 +2,10 @@ package com.mytaxi.domain;
 
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +15,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DuplicateKeyException;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
@@ -20,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Unit Tests of DriverServiceImpl")
-public class DriverDomainServiceTest
+class DriverDomainServiceTest
 {
 
     @Mock
@@ -30,10 +36,71 @@ public class DriverDomainServiceTest
     private DriverDomainService driverDomainService;
 
 
+    private static Driver createNewDriver()
+    {
+        return new Driver("john", "pa$$word");
+    }
+
+
     @BeforeEach
-    public void setUp() throws Exception
+    void setUp()
     {
         MockitoAnnotations.initMocks(this);
+    }
+
+
+    @Test
+    @DisplayName("Driver creation field check")
+    public void testCreateDriverAndCheckAttributes() throws ConstraintsViolationException
+    {
+        Driver driver = createNewDriver();
+        when(driverRepository.save(driver)).thenReturn(driver);
+
+        driverDomainService.create(driver);
+
+        assertNull(driver.getId());
+        assertEquals(false, driver.getDeleted());
+        assertEquals(OnlineStatus.OFFLINE, driver.getOnlineStatus());
+        assertEquals("john", driver.getUsername());
+        assertEquals("pa$$word", driver.getPassword());
+        assertNull(driver.getCoordinate());
+        verify(driverRepository, times(1)).save(driver);
+    }
+
+
+    @Test
+    @DisplayName("Update drivers location")
+    public void testUpdateDriverLocation() throws EntityNotFoundException
+    {
+        long driverId = 1L;
+        double longitude = 88;
+        double latitude = 0;
+
+        Driver driver = createNewDriver();
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+
+        driverDomainService.updateLocation(driverId, longitude, latitude);
+
+        assertEquals(new GeoCoordinate(latitude, longitude), driver.getCoordinate());
+        verify(driverRepository, times(1)).findById(driverId);
+    }
+
+
+    @Test
+    @DisplayName("Test delete attr set correctly")
+    public void testMarkDriverDeleted() throws EntityNotFoundException
+    {
+
+        long driverId = 1L;
+        Driver driver = createNewDriver();
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        assertEquals(false, driver.getDeleted());
+
+        driverDomainService.delete(driverId);
+
+        assertEquals(true, driver.getDeleted());
+        verify(driverRepository, times(1)).findById(driverId);
+
     }
 
 
@@ -53,61 +120,36 @@ public class DriverDomainServiceTest
 
 
     @Test
-    @DisplayName("Driver creation field check")
-    public void createDriverAndCheckAttributes() throws ConstraintsViolationException
-    {
-        Driver driver = createNewDriver();
-        when(driverRepository.save(driver)).thenReturn(driver);
-
-        driverDomainService.create(driver);
-
-        assertNull(driver.getId());
-        assertEquals(false, driver.getDeleted());
-        assertEquals(OnlineStatus.OFFLINE, driver.getOnlineStatus());
-        assertEquals("john", driver.getUsername());
-        assertEquals("pa$$word", driver.getPassword());
-        assertNull(driver.getCoordinate());
-        verify(driverRepository, times(1)).save(driver);
-    }
-
-
-    @Test
-    @DisplayName("Update drivers location")
-    public void updateDriverLocation() throws EntityNotFoundException
+    void testFind() throws EntityNotFoundException
     {
         long driverId = 1L;
-        double longitude = 88;
-        double latitude = 0;
 
-        Driver driver = createNewDriver();
-        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(createNewDriver()));
 
-        driverDomainService.updateLocation(driverId, longitude, latitude);
+        Driver driver = driverDomainService.find(driverId);
 
-        assertEquals(new GeoCoordinate(latitude, longitude), driver.getCoordinate());
+        assertNotNull(driver);
         verify(driverRepository, times(1)).findById(driverId);
     }
 
 
     @Test
-    @DisplayName("Test delete attr set correctly")
-    public void markDriverDeleted() throws EntityNotFoundException
+    void findDriversByOnlineStatus()
     {
 
-        long driverId = 1L;
-        Driver driver = createNewDriver();
-        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
-        assertEquals(false, driver.getDeleted());
+        Driver drv1 = new Driver("drv1", "drv1pss");
+        Driver drv2 = new Driver("drv2", "drv2pss");
+        Driver drv3 = new Driver("drv3", "drv2pss");
 
-        driverDomainService.delete(driverId);
+        List<Driver> driverInputList = Arrays.asList(drv1, drv2, drv3);
 
-        assertEquals(true, driver.getDeleted());
-        verify(driverRepository, times(1)).findById(driverId);
+        OnlineStatus onlineStatus = OnlineStatus.ONLINE;
+
+        when(driverRepository.findByOnlineStatus(onlineStatus)).thenReturn(driverInputList);
+
+        List<Driver> driverList = driverDomainService.find(onlineStatus);
+
+        assertThat(driverList, not(IsEmptyCollection.empty()));
 
     }
-
-    private static Driver createNewDriver(){
-        return new Driver("john", "pa$$word");
-    }
-
 }

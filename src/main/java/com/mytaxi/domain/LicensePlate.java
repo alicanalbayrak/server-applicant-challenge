@@ -14,10 +14,11 @@ public class LicensePlate
     private final String licensePlate;
 
 
-
-    protected LicensePlate(){
+    protected LicensePlate()
+    {
         licensePlate = null;
     }
+
 
     protected LicensePlate(String licensePlate)
     {
@@ -29,6 +30,7 @@ public class LicensePlate
     {
         return new LicensePlate(licensePlate);
     }
+
 
     public String getValue()
     {

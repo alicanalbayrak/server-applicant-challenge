@@ -6,12 +6,14 @@ import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
+import com.mytaxi.domain.shared.DriverAlreadySelectedCarException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
+import com.mytaxi.domain.shared.OfflineDriverCarSelectionException;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +38,7 @@ public class DriverController
 
 
     @Autowired
-    public DriverController(DriverService driverService)
+    public DriverController(final DriverService driverService)
     {
         this.driverService = driverService;
     }
@@ -58,7 +60,6 @@ public class DriverController
 
 
     @DeleteMapping("/{driverId}")
-    @Transactional
     public void deleteDriver(@PathVariable long driverId) throws EntityNotFoundException
     {
         driverService.delete(driverId);
@@ -66,7 +67,6 @@ public class DriverController
 
 
     @PutMapping("/{driverId}")
-    @Transactional
     public void updateLocation(
         @PathVariable long driverId, @RequestParam double longitude, @RequestParam double latitude)
         throws EntityNotFoundException
@@ -76,24 +76,23 @@ public class DriverController
 
 
     @PostMapping("/{driverId}/selectCar/{carId}")
-    @Transactional
-    public DriverCarSelectDTO selectCar(@RequestParam long driverId, @RequestParam long carId) throws CarAlreadyInUseException, EntityNotFoundException
+    public DriverCarSelectDTO selectCar(@RequestParam long driverId, @RequestParam long carId) throws CarAlreadyInUseException, EntityNotFoundException,
+                                                                                                      OfflineDriverCarSelectionException, DriverAlreadySelectedCarException
     {
         return driverService.selectCar(driverId, carId);
     }
 
 
     @DeleteMapping("/{driverId}/deselectCar")
-    @Transactional
-    public void deselectCar(@RequestParam long driverId) throws CarAlreadyInUseException, EntityNotFoundException
+    public void deselectCar(@RequestParam long driverId) throws EntityNotFoundException
     {
         driverService.deselectCar(driverId);
     }
 
 
     @GetMapping
-    public List<DriverDTO> findDrivers(@RequestParam OnlineStatus onlineStatus)
+    public List<DriverDTO> findDrivers(@RequestParam Optional<OnlineStatus> onlineStatus, @RequestParam Optional<String> username)
     {
-        return driverService.find(onlineStatus);
+        return driverService.find(onlineStatus.orElse(null), username.orElse(null));
     }
 }

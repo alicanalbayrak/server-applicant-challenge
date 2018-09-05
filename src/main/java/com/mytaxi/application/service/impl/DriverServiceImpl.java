@@ -2,50 +2,49 @@ package com.mytaxi.application.service.impl;
 
 import com.mytaxi.application.dto.DriverCarSelectDTO;
 import com.mytaxi.application.dto.DriverDTO;
-import com.mytaxi.application.mapper.DriverCarSelectMapper;
+import com.mytaxi.application.mapper.DriverCarSelectionMapper;
 import com.mytaxi.application.mapper.DriverMapper;
 import com.mytaxi.application.service.DriverService;
 import com.mytaxi.domain.Driver;
+import com.mytaxi.domain.DriverCarSelectionDomainService;
 import com.mytaxi.domain.DriverDomainService;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
+import com.mytaxi.domain.shared.DriverAlreadySelectedCarException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
+import com.mytaxi.domain.shared.OfflineDriverCarSelectionException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Check interface comments
- *
- * @see com.mytaxi.application.service.DriverService
+ * This class is a application level service for Driver domain.
+ * Responsible for communication abstraction between distributable rest interface and domain service.
+ * Handles DTO - Entity conversion and delegates service calls to domain layer service
  */
 @Service
 public class DriverServiceImpl implements DriverService
 {
 
-    private final DriverDomainService driverDomainService;
+    private DriverDomainService driverDomainService;
 
-
-    @Autowired
-    public DriverServiceImpl(DriverDomainService driverDomainService)
-    {
-        this.driverDomainService = driverDomainService;
-    }
+    private DriverCarSelectionDomainService driverCarSelectionDomainService;
 
 
     @Override
     public DriverDTO find(Long driverId) throws EntityNotFoundException
     {
-        return DriverMapper.toDto(driverDomainService.find(driverId));
+        return DriverMapper.makeDriverDTO(driverDomainService.find(driverId));
     }
 
 
     @Override
-    public DriverDTO create(DriverDTO newDriver) throws ConstraintsViolationException
+    public DriverDTO create(DriverDTO driverDTO) throws ConstraintsViolationException
     {
-        Driver driver = DriverMapper.toEntity(newDriver);
-        return DriverMapper.toDto(driverDomainService.create(driver));
+        Driver driver = DriverMapper.makeDriverDO(driverDTO);
+        return DriverMapper.makeDriverDTO(driverDomainService.create(driver));
     }
 
 
@@ -66,21 +65,46 @@ public class DriverServiceImpl implements DriverService
     @Override
     public List<DriverDTO> find(OnlineStatus onlineStatus)
     {
-        return DriverMapper.toDtoList(driverDomainService.find(onlineStatus));
+        return DriverMapper.makeDriverDTOList(driverDomainService.find(onlineStatus));
     }
 
 
     @Override
-    public DriverCarSelectDTO selectCar(long driverId, long carId) throws EntityNotFoundException, CarAlreadyInUseException
+    public DriverCarSelectDTO selectCar(long driverId, long carId) throws DriverAlreadySelectedCarException, CarAlreadyInUseException, OfflineDriverCarSelectionException,
+                                                                          EntityNotFoundException
     {
-        Driver driver = driverDomainService.selectCar(driverId, carId);
-        return DriverCarSelectMapper.from(driver);
+        return DriverCarSelectionMapper.toDto(driverCarSelectionDomainService.selectCar(driverId, carId));
     }
 
 
     @Override
     public void deselectCar(long driverId) throws EntityNotFoundException
     {
-        driverDomainService.deselectCar(driverId);
+        driverCarSelectionDomainService.deselectCar(driverId);
+    }
+
+
+    @Override
+    public List<DriverDTO> find(OnlineStatus onlineStatus, String username)
+    {
+        return DriverMapper.makeDriverDTOList(driverDomainService.findAllByOnlineStatusOrUsername(onlineStatus, username));
+    }
+
+    /**
+     * Injection point
+     *
+     * @param driverDomainService
+     */
+    @Autowired
+    public void setDriverDomainService(DriverDomainService driverDomainService)
+    {
+        this.driverDomainService = driverDomainService;
+    }
+
+
+    @Autowired
+    public void setDriverCarSelectionDomainService(DriverCarSelectionDomainService driverCarSelectionDomainService)
+    {
+        this.driverCarSelectionDomainService = driverCarSelectionDomainService;
     }
 }

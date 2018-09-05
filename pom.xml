@@ -29,14 +29,12 @@
         <java.version>1.8</java.version>
         <io.springfox.springfox.version>2.8.0</io.springfox.springfox.version>
         <javax.xml.bind.jaxb.api.version>2.2.11</javax.xml.bind.jaxb.api.version>
-
         <!-- Following failsafe and surefire plugin versions enables us to use JUNIT5 -->
         <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
     </properties>
 
     <dependencies>
-        <!-- spring framework -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -46,7 +44,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- individual -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -72,7 +69,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- test scope dependencies -->
+        <!--test dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -108,5 +105,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

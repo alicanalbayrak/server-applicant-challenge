@@ -7,9 +7,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -46,10 +43,6 @@ public class Driver extends BaseEntity<Driver>
     @Column(nullable = false)
     private OnlineStatus onlineStatus;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SelectedCar")
-    private Car selectedCar;
-
 
     protected Driver()
     {
@@ -75,24 +68,9 @@ public class Driver extends BaseEntity<Driver>
     }
 
 
-    public void selectCar(Car car)
+    public boolean isOnline()
     {
-        if(onlineStatus != OnlineStatus.ONLINE){
-
-        }
-
-        this.selectedCar = car;
-        car.setInUse(true);
-    }
-
-
-    public void deselectCar()
-    {
-        if (this.selectedCar != null)
-        {
-            this.selectedCar.setInUse(false);
-        }
-        this.selectedCar = null;
+        return this.onlineStatus == OnlineStatus.ONLINE;
     }
 
 }

@@ -11,5 +11,4 @@ public class MytaxiServerApplicantTestApplication
     {
         SpringApplication.run(MytaxiServerApplicantTestApplication.class, args);
     }
-
 }

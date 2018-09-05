@@ -28,6 +28,34 @@ class CarDomainServiceTest
     private CarDomainService carDomainService;
 
 
+    private static Car createNewCar()
+    {
+        return Car.builder()
+            .id(1L)
+            .convertible(false)
+            .engineType(EngineType.DISEL)
+            .licensePlate(LicensePlate.of("06XYZ999"))
+            .manufacturer(Manufacturer.createManufacturer("Honda"))
+            .rating(Rating.of(0d))
+            .seatCount(SeatCount.of(4))
+            .build();
+    }
+
+
+    private static Car createDifferentCar()
+    {
+        return Car.builder()
+            .id(2L)
+            .convertible(true)
+            .engineType(EngineType.GAS)
+            .licensePlate(LicensePlate.of("40AAB23"))
+            .manufacturer(Manufacturer.createManufacturer("Toyota"))
+            .rating(Rating.of(0d))
+            .seatCount(SeatCount.of(4))
+            .build();
+    }
+
+
     @BeforeEach
     void setUp()
     {
@@ -111,34 +139,6 @@ class CarDomainServiceTest
         assertThat(car.getRating()).isEqualTo(Rating.of(0d));
         assertThat(car.getSeatCount()).isEqualTo(SeatCount.of(4));
 
-    }
-
-
-    private static Car createNewCar()
-    {
-        return Car.builder()
-            .id(1L)
-            .convertible(false)
-            .engineType(EngineType.DISEL)
-            .licensePlate(LicensePlate.of("06XYZ999"))
-            .manufacturer(Manufacturer.createManufacturer("Honda"))
-            .rating(Rating.of(0d))
-            .seatCount(SeatCount.of(4))
-            .build();
-    }
-
-
-    private static Car createDifferentCar()
-    {
-        return Car.builder()
-            .id(2L)
-            .convertible(true)
-            .engineType(EngineType.GAS)
-            .licensePlate(LicensePlate.of("40AAB23"))
-            .manufacturer(Manufacturer.createManufacturer("Toyota"))
-            .rating(Rating.of(0d))
-            .seatCount(SeatCount.of(4))
-            .build();
     }
 
 

@@ -1,22 +1,22 @@
 package com.mytaxi.application.service;
 
-import com.mytaxi.application.dto.DriverDTO;
 import com.mytaxi.application.dto.DriverCarSelectDTO;
+import com.mytaxi.application.dto.DriverDTO;
 import com.mytaxi.domain.OnlineStatus;
 import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
+import com.mytaxi.domain.shared.DriverAlreadySelectedCarException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
+import com.mytaxi.domain.shared.OfflineDriverCarSelectionException;
 import java.util.List;
+import java.util.Optional;
 
-/**
- *  This interface is a application level service for Driver domain.
- *  Responsible for communication abstraction between distributable services and domain service.
- */
 public interface DriverService
 {
+
     DriverDTO find(Long driverId) throws EntityNotFoundException;
 
-    DriverDTO create(DriverDTO newDriver) throws ConstraintsViolationException;
+    DriverDTO create(DriverDTO DriverDTO) throws ConstraintsViolationException;
 
     void delete(Long driverId) throws EntityNotFoundException;
 
@@ -24,9 +24,10 @@ public interface DriverService
 
     List<DriverDTO> find(OnlineStatus onlineStatus);
 
-    DriverCarSelectDTO selectCar(long driverId, long carId) throws EntityNotFoundException, CarAlreadyInUseException;
+    DriverCarSelectDTO selectCar(long driverId, long carId) throws DriverAlreadySelectedCarException, CarAlreadyInUseException, OfflineDriverCarSelectionException,
+                                                                   EntityNotFoundException;
 
     void deselectCar(long driverId) throws EntityNotFoundException;
 
-
+    List<DriverDTO> find(OnlineStatus onlineStatus, String username);
 }

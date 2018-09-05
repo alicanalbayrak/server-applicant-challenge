@@ -1,7 +1,6 @@
 package com.mytaxi.domain;
 
 import com.google.common.collect.Lists;
-import com.mytaxi.domain.shared.CarAlreadyInUseException;
 import com.mytaxi.domain.shared.ConstraintsViolationException;
 import com.mytaxi.domain.shared.EntityNotFoundException;
 import java.util.List;
@@ -22,17 +21,9 @@ public class CarDomainService
 
     private static final Logger LOG = LoggerFactory.getLogger(CarDomainService.class);
 
-    private final CarRepository carRepository;
+    private CarRepository carRepository;
 
-    private final ManufacturerRepository manufacturerRepository;
-
-
-    @Autowired
-    public CarDomainService(final CarRepository carRepository, ManufacturerRepository manufacturerRepository)
-    {
-        this.carRepository = carRepository;
-        this.manufacturerRepository = manufacturerRepository;
-    }
+    private ManufacturerRepository manufacturerRepository;
 
 
     /**
@@ -114,14 +105,6 @@ public class CarDomainService
     }
 
 
-    public Car getCarByIdIfAvailable(long carId) throws EntityNotFoundException, CarAlreadyInUseException
-    {
-        Car car = findCarChecked(carId);
-        car.verifyNotInUse();
-        return car;
-    }
-
-
     /**
      * Retrieves car from datasource by its id
      *
@@ -153,5 +136,19 @@ public class CarDomainService
     public List<Car> listCars()
     {
         return Lists.newArrayList(carRepository.findAll());
+    }
+
+
+    @Autowired
+    public void setCarRepository(CarRepository carRepository)
+    {
+        this.carRepository = carRepository;
+    }
+
+
+    @Autowired
+    public void setManufacturerRepository(ManufacturerRepository manufacturerRepository)
+    {
+        this.manufacturerRepository = manufacturerRepository;
     }
 }

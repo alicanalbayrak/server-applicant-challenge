@@ -44,7 +44,6 @@ public class CarController
         return carService.find(carId);
     }
 
-    @Transactional
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CarDTO createCar(@Valid @RequestBody CarDTO carDTO) throws ConstraintsViolationException, EntityNotFoundException

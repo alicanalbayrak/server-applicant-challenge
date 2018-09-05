@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 
 public class DriverMapper
 {
-    public static Driver toEntity(DriverDTO driverDTO)
+    public static Driver makeDriverDO(DriverDTO driverDTO)
     {
         return new Driver(driverDTO.getUsername(), driverDTO.getPassword());
     }
 
 
-    public static DriverDTO toDto(Driver driver)
+    public static DriverDTO makeDriverDTO(Driver driver)
     {
         DriverDTO.DriverDTOBuilder driverDTOBuilder = DriverDTO.newBuilder()
             .setId(driver.getId())
@@ -32,10 +32,10 @@ public class DriverMapper
     }
 
 
-    public static List<DriverDTO> toDtoList(Collection<Driver> drivers)
+    public static List<DriverDTO> makeDriverDTOList(Collection<Driver> drivers)
     {
         return drivers.stream()
-            .map(DriverMapper::toDto)
+            .map(DriverMapper::makeDriverDTO)
             .collect(Collectors.toList());
     }
 }
