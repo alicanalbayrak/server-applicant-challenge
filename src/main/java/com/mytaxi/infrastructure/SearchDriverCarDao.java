@@ -63,6 +63,10 @@ public class SearchDriverCarDao
         searchRequest.getLicensePlate().ifPresent(licensePlate ->
             criteriaList.add(criteriaBuilder.equal(fromCars.get("licensePlate"), licensePlate)));
 
+        // seat count
+        searchRequest.getSeatCount().ifPresent(seatCount ->
+            criteriaList.add(criteriaBuilder.equal(fromCars.get("seatCount"), seatCount)));
+
         searchRequest.getManufacturer().ifPresent(manufacturer ->
             criteriaList.add(criteriaBuilder.equal(fromCars.get("manufacturer"), manufacturer)));
 
